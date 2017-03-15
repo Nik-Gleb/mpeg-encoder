@@ -102,17 +102,6 @@ publishing {
     }
 }
 
-/*configurations.all {
-    resolutionStrategy {
-        force 'junit:junit:4.12'
-        force 'com.android.support:support-annotations:25.2.0'
-        force 'com.android.support:support-v4:25.2.0'
-        force 'com.android.support:appcompat-v7:25.2.0'
-        force 'com.android.support:design:25.2.0'
-        force 'com.android.support:recyclerview-v7:25.2.0'
-    }
-}*/
-
 dependencies {
     /* Proguard rules */
     compile 'com.infstory:proguard-annotations:1.0.2'
