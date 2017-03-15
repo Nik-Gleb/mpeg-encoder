@@ -1,0 +1,99 @@
+/*
+ * build.gradle
+ * app
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2017 Gleb Nikitenko
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+apply plugin: 'com.android.application'
+
+/*================== DECLARATIONS =====================*/
+
+def final int MIN_SDK_MAIN = 19
+def final String VERSION_NAME = '0.0.1'
+def final int SDK_VER = Integer.parseInt(sdkVer)
+/*=====================================================*/
+
+android {
+    compileSdkVersion SDK_VER
+    buildToolsVersion buildToolsVer
+
+    signingConfigs {
+        releaseConfig {
+            storeFile file(sigStoreFile)
+            storePassword sigStorePassword
+            keyAlias sigKeyAlias
+            keyPassword sigKeyPassword
+        }
+    }
+
+    //noinspection GroovyMissingReturnStatement
+    defaultConfig {
+        versionName VERSION_NAME; minSdkVersion MIN_SDK_MAIN; targetSdkVersion SDK_VER
+        dexOptions { javaMaxHeapSize "12288M" }
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+            incremental true
+        }
+        jackOptions { enabled false }
+        consumerProguardFiles 'proguard-rules.pro'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //externalNativeBuild {cmake {cppFlags ""}}
+    }
+
+    buildTypes {
+        debug { useProguard false; debuggable true; manifestPlaceholders = [exported: false] }
+        release {
+            debuggable false; useProguard true; shrinkResources true; minifyEnabled true
+            proguardFile 'proguard-rules.pro'
+            //noinspection GroovyAssignabilityCheck
+            signingConfig signingConfigs.releaseConfig
+            manifestPlaceholders = [exported: true]
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'junit:junit:4.12'
+        force 'com.android.support:support-annotations:25.2.0'
+        force 'com.android.support:support-v4:25.2.0'
+        force 'com.android.support:appcompat-v7:25.2.0'
+        force 'com.android.support:design:25.2.0'
+        force 'com.android.support:recyclerview-v7:25.2.0'
+    }
+}
+
+dependencies {
+    /* Proguard rules */
+    compile 'com.infstory:proguard-annotations:1.0.2'
+    /* Provides APIs to support adding annotation metadata. */
+    compile 'com.android.support:support-annotations:25.3.0'
+    /* App compatibility */
+    compile 'com.android.support:appcompat-v7:25.3.0'
+
+    //compile project(':lib')
+    compile 'ru.nikitenkogleb:mpegencoder:0.0.1'
+
+}
