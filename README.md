@@ -69,8 +69,8 @@ All classes and methods are covered by instrumented tests.
  * Galaxy J5 (API23)
  * Galaxy S3 (API23 - СyanogenMod 14.1)
  * Galaxy S7 (API23)
- * Nexus 9 (API23)
  * Xperia Z3 Compact (API23)
+ * Nexus 9 (API25)
  * General AVD's (API21 - API25)
 
 ### Known issues:

@@ -88,7 +88,6 @@ public final class MainActivity extends AppCompatActivity {
     private static final int IFRAME_INTERVAL = 1;
 
     /** The one seconds of video. */
-    @SuppressWarnings("PointlessArithmeticExpression")
     private static final int NUM_FRAMES = 131;
 
     /** The input buffer. */
@@ -101,7 +100,7 @@ public final class MainActivity extends AppCompatActivity {
 
     /** The parsing task. */
     @Nullable
-    private ParseTask mParseTask = null;
+    private EncodeTask mEncodeTask = null;
 
     /** Is video playing. */
     private boolean mNowPlaying = false;
@@ -124,18 +123,14 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(mContentView);
 
-        startParseTask(new File(getFilesDir(), OUTPUT_FILE_NAME).getAbsolutePath());
-
-        //Total methods in lib-release.aar: 157 (0,24% used)
-        //Total fields in lib-release.aar:  48 (0,07% used)
-        // 27762 bytes
+        startEncode(new File(getFilesDir(), OUTPUT_FILE_NAME).getAbsolutePath());
     }
 
     /** {@inheritDoc} */
     @Override
     protected final void onDestroy() {
 
-        stopParseTask();
+        stopEncodeTask();
         stopVideo();
 
         assert mContentView != null;
@@ -197,23 +192,23 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-    /** Start parse task. */
-    private void startParseTask(@NonNull String fileName) {
-        stopParseTask();
-        mParseTask = new ParseTask(this, fileName);
+    /** Start encode task. */
+    private void startEncode(@NonNull String fileName) {
+        stopEncodeTask();
+        mEncodeTask = new EncodeTask(this, fileName);
     }
 
-    /** Cancel Parse Task. */
-    private void stopParseTask() {
-        if (mParseTask != null) {
-            mParseTask.close();
-            mParseTask = null;
+    /** Cancel encode Task. */
+    private void stopEncodeTask() {
+        if (mEncodeTask != null) {
+            mEncodeTask.close();
+            mEncodeTask = null;
         }
     }
 
 
     /** The mp4 encoding task. */
-    private static final class ParseTask extends AsyncTask<Void, Void, Void> implements Closeable {
+    private static final class EncodeTask extends AsyncTask<Void, Void, Void> implements Closeable {
 
         /** The main activity weak reference. */
         @NonNull
@@ -228,12 +223,12 @@ public final class MainActivity extends AppCompatActivity {
         private final String mFilePath;
 
         /**
-         * Constructs a new {@link ParseTask} with a {@link MainActivity} reference.
+         * Constructs a new {@link EncodeTask} with a {@link MainActivity} reference.
          *
          * @param activity the {@link MainActivity} instance
          * @param filePath the output file path
          */
-        ParseTask(@NonNull MainActivity activity, @NonNull String filePath) {
+        EncodeTask(@NonNull MainActivity activity, @NonNull String filePath) {
             mMainActivityWeakReference = new WeakReference<>(activity);
             mFilePath = filePath; mAssetManager = activity.getAssets();
             execute();

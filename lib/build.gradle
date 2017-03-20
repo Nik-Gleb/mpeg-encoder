@@ -33,25 +33,19 @@ apply plugin: 'com.getkeepsafe.dexcount'
 
 def final int MIN_SDK_MAIN = 19
 def final String VERSION_NAME = '0.0.1'
-def final int SDK_VER = Integer.parseInt(sdkVer)
+def final int TARGET_SDK_VERSION = 25
+def final String BUILD_TOOLS_VERSION = '25.0.2'
 /*=====================================================*/
 
 android {
-    compileSdkVersion SDK_VER
-    buildToolsVersion buildToolsVer
-
-    signingConfigs {
-        releaseConfig {
-            storeFile file(sigStoreFile)
-            storePassword sigStorePassword
-            keyAlias sigKeyAlias
-            keyPassword sigKeyPassword
-        }
-    }
+    compileSdkVersion TARGET_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     //noinspection GroovyMissingReturnStatement
     defaultConfig {
-        versionName VERSION_NAME; minSdkVersion MIN_SDK_MAIN; targetSdkVersion SDK_VER
+        versionName VERSION_NAME
+        minSdkVersion MIN_SDK_MAIN
+        targetSdkVersion TARGET_SDK_VERSION
         dexOptions { javaMaxHeapSize "12288M" }
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
@@ -68,7 +62,6 @@ android {
             debuggable false; useProguard true; shrinkResources true; minifyEnabled true
             proguardFile 'proguard-rules.pro'
             //noinspection GroovyAssignabilityCheck
-            signingConfig signingConfigs.releaseConfig
             manifestPlaceholders = [exported: true]
         }
     }
@@ -97,21 +90,10 @@ publishing {
     repositories {
         maven {
             //noinspection GroovyAssignabilityCheck
-            url myMavenRepoWriteUrl
+            //url myMavenRepoWriteUrl
         }
     }
 }
-
-/*configurations.all {
-    resolutionStrategy {
-        force 'junit:junit:4.12'
-        force 'com.android.support:support-annotations:25.2.0'
-        force 'com.android.support:support-v4:25.2.0'
-        force 'com.android.support:appcompat-v7:25.2.0'
-        force 'com.android.support:design:25.2.0'
-        force 'com.android.support:recyclerview-v7:25.2.0'
-    }
-}*/
 
 dependencies {
     /* Proguard rules */
