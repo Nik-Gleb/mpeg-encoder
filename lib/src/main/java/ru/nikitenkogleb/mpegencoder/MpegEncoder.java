@@ -459,7 +459,7 @@ public final class MpegEncoder implements Closeable {
     }
 
     /**
-     * Predefined terminate result codes.
+     * Predefined motion modes.
      *
      * @author Nikitenko Gleb
      * @since 1.0, 06/10/2016
